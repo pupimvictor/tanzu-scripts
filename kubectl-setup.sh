@@ -25,10 +25,6 @@ if ! type _init_completion; then
 	apt-get install bash-completion 
 fi
 
-# install make 
-sudo apt install make
-
-
 # Set the kubectl completion script source for your shell sessions
 echo 'source <(kubectl completion bash)'>>$HOME/.bashrc
 echo 'source /etc/bash_completion' >>$HOME/.bashrc
@@ -84,6 +80,7 @@ wget -O $HOME/git/tanzu-login.sh https://gist.githubusercontent.com/pupimvictor/
 sudo chmod +x tanzu-login.sh
 source $HOME/git/tanzu-login.sh
 
+sudo apt install make
 
 source $HOME/.bashrc
 
