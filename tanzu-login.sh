@@ -35,7 +35,7 @@ print_help() {
 # Returns:
 #######################################
 tanzu_login() {
-  local -r ip="${1:?"tanzu_login is missing IP parameter"}"
+  local -r ip="${TANZU_WCP:?"tanzu_login is missing Tanzu Supervisor host parameter. Set TANZU_WCP env var with ip or hostname"}"
   local -r ns="${2-}"
   local -r tkc="${3:-}"
 
@@ -73,7 +73,7 @@ for ((i=1; i<=$#; i=i+2)); do
                 oak)
                     server_ip=10.53.227.66 ;;
                 h2o)
-                    server_ip=vc01cl01-wcp.h2o-2-6053.h2o.vmware.com ;;
+                    server_ip=$TANZU_WCP;;
                 *) 
                     echo "${server} is not a valid server id. Valid servers: oak | clp" ; print_help ; exit 1 ;;
             esac ;;
