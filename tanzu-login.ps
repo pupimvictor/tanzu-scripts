@@ -1,0 +1,32 @@
+# Check inputs
+$clusterName = $args[0]
+$namespace = $args[1]
+$username = $env:USERNAME
+$supervisor = $env:SUPERVISOR
+
+if (-not [string]::IsNullOrEmpty($clusterName) -and -not [string]::IsNullOrEmpty($namespace) -and -not [string]::IsNullOrEmpty($username) -and -not [string]::IsNullOrEmpty($supervisor)) {
+    # Call kubectl vsphere login command
+    kubectl vsphere login --server=$clusterName --insecure-skip-tls-verify=true --tanzu-kubernetes-cluster-namespace=$namespace --vsphere-username=$username --tanzu-kubernetes-cluster-supervisor-username=$supervisor
+} else {
+    $missingInputs = @()
+    if ([string]::IsNullOrEmpty($clusterName)) { 
+        $missingInputs += "cluster-name" 
+        Write-Host "Please provide the 'cluster-name' as a command line argument."
+    }
+    if ([string]::IsNullOrEmpty($namespace)) { 
+        $missingInputs += "namespace" 
+        Write-Host "Please provide the 'namespace' as a command line argument."
+    }
+    if ([string]::IsNullOrEmpty($username)) { 
+        $missingInputs += "username (environment variable)" 
+        Write-Host "Please set the 'USERNAME' environment variable to the appropriate value."
+    }
+    if ([string]::IsNullOrEmpty($supervisor)) { 
+        $missingInputs += "supervisor (environment variable)" 
+        Write-Host "Please set the 'SUPERVISOR' environment variable to the appropriate value."
+    }
+    
+    $missingInputsString = $missingInputs -join ", "
+    $errorMessage = "Missing input(s): $missingInputsString."
+    Write-Error $errorMessage
+}
