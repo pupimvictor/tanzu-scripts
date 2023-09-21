@@ -1,11 +1,12 @@
 function Show-Help {
-    Write-Host "This script requires the following inputs:"
+    Write-Host "Usage: tanzu-login.ps <cluster-name> <cluster-namespace> "
+    Write-Host ""
     Write-Host "  - cluster-name: The name of the Kubernetes cluster in vSphere."
-    Write-Host "  - namespace: The namespace of the Kubernetes cluster."
+    Write-Host "  - namespace: The vSphere namespace"
     Write-Host ""
     Write-Host "The following environment variables must also be set:"
     Write-Host "  - USERNAME: The username for accessing the Kubernetes cluster."
-    Write-Host "  - SUPERVISOR: The supervisor username for accessing the Kubernetes cluster."
+    Write-Host "  - SUPERVISOR: The vSpehere WCP supervisor hostname."
 }
 
 # Check inputs
@@ -16,7 +17,7 @@ $supervisor = $env:SUPERVISOR
 
 if (-not [string]::IsNullOrEmpty($clusterName) -and -not [string]::IsNullOrEmpty($namespace) -and -not [string]::IsNullOrEmpty($username) -and -not [string]::IsNullOrEmpty($supervisor)) {
     # Call kubectl vsphere login command
-    kubectl vsphere login --server=$clusterName --insecure-skip-tls-verify=true --tanzu-kubernetes-cluster-namespace=$namespace --vsphere-username=$username --tanzu-kubernetes-cluster-supervisor-username=$supervisor
+    kubectl vsphere login --server=$supervisor --insecure-skip-tls-verify=true --tanzu-kubernetes-cluster-namespace=$namespace --vsphere-username=$username --tanzu-kubernetes-cluster-name=$supervisor
 } else {
     if ($args.Length -eq 1 -and ($args[0] -eq "--help" -or $args[0] -eq "-h")) {
         Show-Help
