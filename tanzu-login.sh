@@ -6,6 +6,12 @@ if [ -z $TANZU_WCP ]; then
   exit 1
 fi
 
+if [ -z $TANZU_USER ]; then
+  echo "using administrator@vsphere.local as user. export TANZU_USER env var to override"
+  TANZU_USER="administrator@vsphere.local"
+fi
+
+
 OIFS=$IFS
 IFS="/"
 IN=(${@})
